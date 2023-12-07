@@ -31,7 +31,7 @@ export default {
     }
   },
   mounted() {
-    const socket = new WebSocket('ws://10.20.0.3:12430');
+    const socket = new WebSocket('ws://localhost:12430');
     socket.addEventListener("message", (event) => {
       this.scores = JSON.parse(event.data).scores
     });
