@@ -27,11 +27,12 @@ export default defineEventHandler(async (event) => {
   const firstSet: Set = {
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    externTeamScore: 0,
+    externalTeamScore: 0,
     homeTeamScore: 0,
     gameId: game.id,
     id: randomUUID(),
     finishedAt: undefined,
+    setPosition: 1
   }
 
   await setRepository.create(firstSet);

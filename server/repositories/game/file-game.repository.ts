@@ -5,6 +5,23 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs'
 export class FileGameRepository implements GameRepository {
   private readonly filePath = process.cwd() + '/tmp/games.json';
 
+  list(): Promise<Game[]> {
+    const games = this.read();
+
+    return Promise.resolve(games);
+  }
+
+  find(gameId: string): Promise<Game> {
+    const games = this.read();
+    const index = games.findIndex(game => game.id === gameId);
+
+    if (index > -1) {
+      return Promise.resolve(games[index]);
+    }
+
+    throw new Error(`Game ${gameId} not found`)
+  }
+
   create(game: Game): Promise<void> {
     const games = this.read();
     games.push(game);

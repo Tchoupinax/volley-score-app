@@ -11,7 +11,7 @@
       <button
         v-if="isHomeTeamWhichWonSet !== undefined"
         @click="persistSetWonBy()"
-        class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 h-16 rounded shadow text-xl"
+        class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 h-16 rounded shadow text-sm sm:text-xl"
       >
         Did {{ isHomeTeamWhichWonSet ? "Home Team": "External Team" }} won the set?
       </button>
@@ -36,8 +36,9 @@ import type { UpdateScorePayload } from '../server/types/score.payload.post';
 import type { ValidateSetPayload } from '../server/types/validate-set.payload';
 
 type Store = {
-  scores: Array<Record<"homeTeamScore" | "externalTeamScore", number>>,
-  isHomeTeamWhichWonSet?: boolean
+  scores: Array<Record<"homeTeamScore" | "externalTeamScore", number>>;
+  isHomeTeamWhichWonSet?: boolean;
+  setFinished: boolean;
 }
 
 export default {
@@ -49,7 +50,8 @@ export default {
           externalTeamScore: 0
         }
       ],
-      isHomeTeamWhichWonSet: undefined
+      isHomeTeamWhichWonSet: undefined,
+      setFinished: false,
     }
   },
   computed: {
@@ -60,25 +62,43 @@ export default {
   async mounted() {
     if (!this.currentGameId) {
       const gameName = prompt("Create new game")!
+      if (gameName === null) {
+        window.location = `/`
+        return;
+      }
+
       const { gameId } = await this.createGame(gameName);
       window.location = `/remote?gameId=${gameId}`
     }
 
     const socket = new WebSocket('ws://10.20.0.3:12430');
-    socket.addEventListener("message", (event) => {
+    socket.addEventListener("message", async (event) => {
       const payload = JSON.parse(event.data)
       switch(payload.type) {
-        case 'score-edited':
-          this.scores.at(-1).externalTeamScore = payload.scores.externTeamScore;
-          this.scores.at(-1).homeTeamScore = payload.scores.homeTeamScore;
+        case 'score-edited': {
           this.isHomeTeamWhichWonSet = undefined;
+          if (!this.setFinished) {
+            this.scores.at(-1).externalTeamScore = payload.scores.externTeamScore;
+            this.scores.at(-1).homeTeamScore = payload.scores.homeTeamScore;
+          } else {
+            this.setFinished = false;
+            setTimeout(async () => {
+              const data = await $fetch(`/api/game-status?gameId=${this.currentGameId}`);
+              const a = data.sets;
+              this.scores = [...a]
+            }, 10)
+          }
           break;
+        }
         case 'set-won':
-          console.log(payload)
           this.isHomeTeamWhichWonSet = payload.data.isHomeTeamWhichWonSet;
           break;
       }
     });
+
+    const data = await $fetch(`/api/game-status?gameId=${this.currentGameId}`);
+    const a = data.sets;
+    this.scores = a
   },
   methods: {
     async increaseScore(isHomeTeam: boolean) {
@@ -102,6 +122,7 @@ export default {
       })
     },
     async persistSetWonBy() {
+      this.setFinished = true;
       await $fetch('/api/validate-set', {
         method: "POST",
         body: {

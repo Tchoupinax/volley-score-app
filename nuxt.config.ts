@@ -12,5 +12,11 @@ export default defineNuxtConfig({
       route: '/ws',
       handler: '~/server-middleware/socket'
     }
-  ]
+  ],
+  runtimeConfig: {
+    appConfig: {
+      setEndPointCount: 10,
+      matchSetCount: 51
+    }
+  }
 })

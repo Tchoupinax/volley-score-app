@@ -6,15 +6,15 @@ import { FileSetRepository } from "../repositories/set/file-set.repository";
 
 const setRepository = new FileSetRepository();
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event) => {  
   const body: UpdateScorePayload = await readBody(event);
 
   const { isHomeTeam, score, gameId } = body;
 
   const currentSet = await setRepository.getCurrentSet(gameId);
 
-  const updatedScore = (isHomeTeam ? currentSet.homeTeamScore : currentSet.externTeamScore) + score;
-  const oppositeTeamScore = isHomeTeam ? currentSet.externTeamScore : currentSet.homeTeamScore
+  const updatedScore = (isHomeTeam ? currentSet.homeTeamScore : currentSet.externalTeamScore) + score;
+  const oppositeTeamScore = isHomeTeam ? currentSet.externalTeamScore : currentSet.homeTeamScore
 
   if (!checkScoreIsAllowed(updatedScore, oppositeTeamScore)) {
     return "KO"
@@ -23,13 +23,13 @@ export default defineEventHandler(async (event) => {
   if (isHomeTeam) {
     currentSet.homeTeamScore = updatedScore;
   } else {
-    currentSet.externTeamScore = updatedScore;
+    currentSet.externalTeamScore = updatedScore;
   }
 
   await setRepository.updateScore(currentSet);
 
   scoreEditedEvent.emit('score-edited', JSON.stringify({
-    externTeamScore: currentSet.externTeamScore,
+    externTeamScore: currentSet.externalTeamScore,
     homeTeamScore: currentSet.homeTeamScore,
   }))
 
@@ -42,17 +42,21 @@ export default defineEventHandler(async (event) => {
 
 function checkScoreIsAllowed(
   incomingScore: number,
-  oppositeTeamScore: number
+  oppositeTeamScore: number,
 ): boolean {
-  return (incomingScore >= 0 && incomingScore <= 25) ||
-    (incomingScore > 25 && Math.abs(oppositeTeamScore - incomingScore) <= 2);
+  const { appConfig } = useRuntimeConfig()
+
+  return (incomingScore >= 0 && incomingScore <= appConfig.setEndPointCount) ||
+    (incomingScore > appConfig.setEndPointCount && Math.abs(oppositeTeamScore - incomingScore) <= 2);
 }
 
 function setFinished(
   incomingScore: number,
-  oppositeTeamScore: number
+  oppositeTeamScore: number,
 ) {
-  if (incomingScore >= 25 && Math.abs(oppositeTeamScore - incomingScore) >= 2) {
+  const { appConfig } = useRuntimeConfig();
+
+  if (incomingScore >= appConfig.setEndPointCount && Math.abs(oppositeTeamScore - incomingScore) >= 2) {
     return true;
   }
 

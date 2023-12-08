@@ -16,7 +16,7 @@ export class FileSetRepository implements SetRepository {
   updateScore(set: Set): Promise<void> {
     const sets = this.read();
 
-    const index = sets.findIndex(currentSet => currentSet.id = set.id);
+    const index = sets.findIndex(currentSet => currentSet.id === set.id);
     if (index > -1) {
       sets[index] = set;
       this.write(sets);
@@ -30,7 +30,7 @@ export class FileSetRepository implements SetRepository {
 
     const currentSet = sets
       .filter(set => set.gameId === gameId)
-      .sort((a, b) => new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1)
+      .sort((a, b) => a.setPosition < b.setPosition ? 1 : -1)
       .at(0);
 
     if (!currentSet) {
@@ -38,6 +38,16 @@ export class FileSetRepository implements SetRepository {
     }
 
     return Promise.resolve(currentSet)
+  }
+
+  getSetsByGame(gameId: string): Promise<Array<Set>> {
+    const sets = this.read();
+
+    const currentsSets = sets
+      .filter(set => set.gameId === gameId)
+      .sort((a, b) => a.setPosition > b.setPosition ? 1 : -1)
+
+    return Promise.resolve(currentsSets)
   }
 
   private read(): Array<Set> {

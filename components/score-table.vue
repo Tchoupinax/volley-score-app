@@ -9,14 +9,23 @@
                 <tr>
                   <th
                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Team A
+                    Teams
                   </th>
+
                   <th
                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Set 1
+                    Score
+                  </th>
+
+                  <th
+                    v-for="(_, index) of scores"
+                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                  >
+                    Set {{  index + 1 }}
                   </th>
                 </tr>
               </thead>
+
               <tbody>
                 <tr>
                   <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5">
@@ -28,16 +37,24 @@
                       </div>
                       <div class="ml-3">
                         <p class="text-gray-900 whitespace-no-wrap">
-                          Team A
+                          Home Team
                         </p>
                       </div>
                     </div>
                   </td>
-                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+
+                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-2xl font-bold">
                     <p class="text-gray-900 whitespace-no-wrap text-center">
-                      {{ scores.at(-1)[Object.keys(scores[0])[0]] }}
+                      {{ scores.slice(0, -1).filter(set => set["homeTeamScore"] > set["externalTeamScore"]).length }}
                     </p>
                   </td>
+
+                  <td v-for="set of scores" class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <p class="text-gray-900 whitespace-no-wrap text-center">
+                      {{ set["homeTeamScore"] }}
+                    </p>
+                  </td>
+
                 </tr>
                 <tr>
                   <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm w-2/5">
@@ -49,14 +66,21 @@
                       </div>
                       <div class="ml-3">
                         <p class="text-gray-900 whitespace-no-wrap">
-                          Team B
+                          External Team
                         </p>
                       </div>
                     </div>
                   </td>
-                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+
+                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-2xl font-bold">
                     <p class="text-gray-900 whitespace-no-wrap text-center">
-                      {{ scores.at(-1)[Object.keys(scores[0])[1]] }}
+                      {{ scores.slice(0, -1).filter(set => set["externalTeamScore"] > set["homeTeamScore"]).length }}
+                    </p>
+                  </td>
+
+                  <td v-for="set of scores" class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <p class="text-gray-900 whitespace-no-wrap text-center">
+                      {{ set["externalTeamScore"] }}
                     </p>
                   </td>
                 </tr>
