@@ -30,12 +30,12 @@ export default {
   props: {
     teamName: {
       type: String,
-      required: true
+      required: true,
     },
     currentScore: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   }
 }
 </script>
