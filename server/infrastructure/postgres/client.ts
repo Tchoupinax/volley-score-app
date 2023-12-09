@@ -16,6 +16,7 @@ export async function executeSQL (
     password: opts.password,
     port: parseInt(opts.port!, 10),
     user: opts.user,
+    ssl: true
   });
   await client.connect();
 
