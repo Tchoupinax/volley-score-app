@@ -66,7 +66,8 @@ export default {
     }
   },
   async mounted() {
-    const socket = new WebSocket('ws://10.20.0.3:12430');
+    const config = useRuntimeConfig()
+    const socket = new WebSocket(config.public.wsEndpoint);
     
     socket.addEventListener("message", (event) => {
       const payload = JSON.parse(event.data)

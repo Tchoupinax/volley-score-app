@@ -32,7 +32,7 @@
                     <div class="flex items-center">
                       <div class="flex-shrink-0 w-10 h-10 hidden sm:table-cell">
                         <img class="w-full h-full rounded-full"
-                          src="https://images.unsplash.com/photo-1601046668428-94ea13437736?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2167&q=80"
+                          src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/ASUL_Lyon_Volley.png/260px-ASUL_Lyon_Volley.png"
                           alt="" />
                       </div>
                       <div class="ml-3">
@@ -61,7 +61,7 @@
                     <div class="flex items-center">
                       <div class="flex-shrink-0 w-10 h-10 hidden sm:table-cell">
                         <img class="w-full h-full rounded-full"
-                          src="https://images.unsplash.com/photo-1601046668428-94ea13437736?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2167&q=80"
+                          src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/ASUL_Lyon_Volley.png/260px-ASUL_Lyon_Volley.png"
                           alt="" />
                       </div>
                       <div class="ml-3">

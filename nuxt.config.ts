@@ -14,6 +14,10 @@ export default defineNuxtConfig({
     }
   ],
   runtimeConfig: {
+    public: {
+      endpoint: "http://localhost",
+      wsEndpoint: "ws://localhost:12430",
+    },
     appConfig: {
       setEndPointCount: 10,
       matchSetCount: 51
