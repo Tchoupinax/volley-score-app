@@ -2,9 +2,9 @@ import { defineEventHandler, readBody } from "h3";
 import { scoreEditedEvent} from '../events/score-edited.event'
 import { UpdateScorePayload } from "../types/score.payload.post";
 import { setWonEvent } from "../events/set-won.event";
-import { FileSetRepository } from "../repositories/set/file-set.repository";
+import { getSetProvider } from "../infrastructure/repositories/set/set.provider";
 
-const setRepository = new FileSetRepository();
+const setRepository = getSetProvider();
 
 export default defineEventHandler(async (event) => {  
   const body: UpdateScorePayload = await readBody(event);

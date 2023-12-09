@@ -1,6 +1,5 @@
-import { Game } from '../../domain/entities/game';
-import { SetRepository } from '../../domain/gateway/set.repository';
-import { Set} from '../../domain/entities/set'
+import { SetRepository } from '../../../domain/gateway/set.repository';
+import { Set } from '../../../domain/entities/set'
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs'
 
 export class FileSetRepository implements SetRepository {

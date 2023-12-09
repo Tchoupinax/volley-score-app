@@ -1,0 +1,2 @@
+psql postgres://postgres:postgres@localhost:5432/postgres -f server/infrastructure/postgres/migrations/01.create-table-games.sql
+psql postgres://postgres:postgres@localhost:5432/postgres -f server/infrastructure/postgres/migrations/02.create-table-sets.sql

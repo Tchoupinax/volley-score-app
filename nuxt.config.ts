@@ -19,8 +19,12 @@ export default defineNuxtConfig({
       wsEndpoint: "ws://localhost:12430",
     },
     appConfig: {
+      matchSetCount: 51,
+      postgres: {
+        url: "postgres://postgres:postgres@localhost:5432/postgres"
+      },
       setEndPointCount: 10,
-      matchSetCount: 51
+      usePostgres: true,
     }
   }
 })

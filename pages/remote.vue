@@ -86,7 +86,7 @@ export default {
             setTimeout(async () => {
               const data = await $fetch(`/api/game-status?gameId=${this.currentGameId}`);
               const a = data.sets;
-              this.scores = [...a]
+              this.scores = [...a].reverse()
             }, 10)
           }
           break;

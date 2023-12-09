@@ -1,13 +1,13 @@
 import { defineEventHandler, readBody } from "h3";
-import { FileGameRepository } from "../repositories/game/file-game.repository";
 import { Game } from "../domain/entities/game";
 import { Set } from "../domain/entities/set";
 import { GameCreationPayload } from "../types/game-creation.payload";
 import { randomUUID } from 'crypto'
-import { FileSetRepository } from "../repositories/set/file-set.repository";
+import { getGameProvider } from "../infrastructure/repositories/game/game.provider";
+import { getSetProvider } from "../infrastructure/repositories/set/set.provider";
 
-const gameRepository = new FileGameRepository();
-const setRepository = new FileSetRepository();
+const gameRepository = getGameProvider();
+const setRepository = getSetProvider();
 
 export default defineEventHandler(async (event) => {
   const body: GameCreationPayload = await readBody(event);
@@ -15,8 +15,6 @@ export default defineEventHandler(async (event) => {
   const game: Game = {
     id: randomUUID(),
     createdAt: new Date().toISOString(),
-    externTeamScore: "",
-    homeTeamName: "",
     name: body.name,
     startedAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),

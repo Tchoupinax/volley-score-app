@@ -1,11 +1,11 @@
 import { defineEventHandler, readBody } from "h3";
 import { ValidateSetPayload } from "../types/validate-set.payload";
-import { FileSetRepository } from "../repositories/set/file-set.repository";
 import { Set } from "../domain/entities/set";
 import { randomUUID } from 'crypto'
 import { scoreEditedEvent } from "../events/score-edited.event";
+import { getSetProvider } from "../infrastructure/repositories/set/set.provider";
 
-const setRepository = new FileSetRepository();
+const setRepository = getSetProvider();
 
 export default defineEventHandler(async (event) => {
 const { appConfig } = useRuntimeConfig();

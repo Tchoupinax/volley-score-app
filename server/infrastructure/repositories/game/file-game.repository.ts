@@ -1,5 +1,5 @@
-import { Game } from '../../domain/entities/game';
-import { GameRepository } from '../../domain/gateway/game.repository'
+import { Game } from '../../../domain/entities/game';
+import { GameRepository } from '../../../domain/gateway/game.repository'
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs'
 
 export class FileGameRepository implements GameRepository {
